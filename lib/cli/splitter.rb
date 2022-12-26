@@ -9,6 +9,7 @@ module CLI
     def initialize(max)
       @records = []
       @index = 0
+      @max = max
     end
 
     def gather(record)
@@ -22,6 +23,7 @@ module CLI
 
     def write_to_file
       File.write("chunks_#{@index}.json", JSON.generate(@records))
+      @index += 1
     end
 
     def finalize

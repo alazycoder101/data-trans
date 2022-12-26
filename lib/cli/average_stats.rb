@@ -2,7 +2,8 @@
 module CLI
   # average stats
   class AverageStats
-    attr_reader :count
+    attr_reader :count, :name
+
     def initialize(name, block)
       @name = name
       @block = block

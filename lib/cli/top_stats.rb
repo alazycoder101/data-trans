@@ -2,6 +2,7 @@
 
 module CLI
   class TopStats
+    attr_reader :name
     def initialize(name, block)
       @name = name
       @stats = {}

@@ -10,10 +10,11 @@ OptionParser.new do |opts|
   opts.on("-v", "--verbose", "Show extra information") do
     @options[:verbose] = true
   end
-  opts.on("-c", "--color", "Enable syntax highlighting") do
-    @options[:syntax_highlighting] = true
+  opts.on("-fFILE", "--file=FILE", "JSON file") do |file|
+    @options[:json_file] = file
   end
 end.parse!
 
-p @options
+puts @options.inspect
+
 CLI.run(@options)

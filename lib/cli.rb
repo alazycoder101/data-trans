@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'debug'
+require 'fast_jsonparser'
 # CLI: command line
 module CLI
   #Dir['lib/cli/**/*.rb'].each { |f| puts f; require_relative "../#{f}" }
@@ -14,39 +15,57 @@ module CLI
 
   module_function
 
-  def run(args = [])
-    processors = []
+  def run(args = {})
 
-    fieldRemover = FieldRemover.new('_oid')
+    puts args.inspect
+    json_file = args[:json_file]
+    verbose = args[:verbose]
+
+    processors = []
+    fieldRemover = FieldRemover.new('_id')
     emptyArrayRemover = EmptyArrayRemover.new
 
-    bioStripper = FieldStripper.new(:bio, Regex.new())
+    bioStripper = FieldStripper.new(:bio, /[^0-9a-z ]/i)
 
     processors << fieldRemover
-    processors << emptyFieldRemover
+    processors << emptyArrayRemover
+    processors << bioStripper
 
     stats = []
 
-    averageFollowedBy = AverageStats.new('followed_by', ->(item) { item[:followed_by].count})
+    averageFollowedBy = AverageStats.new('followed_by', ->(item) { item[:followed_by] })
     averageMentions = AverageStats.new('mentions', ->(item) { item[:mentions].count})
-    mostFollowedUsers = TopStats.new('most_folloed_users', ->(item) { item[:id]})
+    mostFollowedUsers = TopStats.new('most_followed_users', ->(item) { [item[:id], item[:followed_by]]})
 
-    splitter = Splitter.new(max)
+    stats << averageMentions
+    stats << averageFollowedBy
+    stats << mostFollowedUsers
 
-    FastJsonparser.load_many(file_path) { |item|
-      # stats
-      stats.each do |stat|
-        stats.gather(item)
-      end
+    splitter = Splitter.new(100)
 
-      # process
-      processors.each do |proccessor|
-        proccessor.process(item)
-      end
+    FastJsonparser.load_many(json_file, batch_size: 9100_000) { |items|
+      items.each { |item|
+        # stats
+        stats.each do |stat|
+          stat.gather(item)
+        end
 
-      splitter.collect(item)
+        # process
+        processors.each do |proccessor|
+          proccessor.process(item)
+        end
+
+        splitter.gather(item)
+      }
     }
 
     splitter.finalize
+
+    if verbose || true
+      stats.each { |stat|
+        puts stat.name
+        puts stat.result
+      }
+    end
   end
 end
