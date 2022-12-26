@@ -16,11 +16,17 @@ bundle install
 rubocop --auto-gen-config
 ```
 
+## JSON parser
+[oj](https://github.com/ohler55/oj)
+[fast_jsonparser](https://github.com/anilmaurya/fast_jsonparser)
+
+## benchmarking
+[bencharmk](https://github.com/ruby/benchmark)
+
+## JSON stream writer
+[json-stream-writer](https://github.com/camertron/json-write-stream)
+
 ## Test
 ```
 COVERAGE=true rspec spec
 ```
-
-## TODO
-
-
