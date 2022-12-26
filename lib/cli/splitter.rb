@@ -30,7 +30,7 @@ module CLI
         @index += 1
       end
 
-      File.write("#{@base_name}#{@index}.json", JSON.generate(@records))
+      File.write("#{@base_name}#{@index}.json", JSON.generate(@records)) if @records.count > 0
     end
   end
 end
