@@ -10,6 +10,7 @@ module CLI
     end
 
     def gather(record)
+      # return must be [id, val]
       record = @block.call(record)
 
       @stats[record[0]] ||= 0

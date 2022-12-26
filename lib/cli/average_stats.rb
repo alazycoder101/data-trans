@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module CLI
   # average stats
   class AverageStats
@@ -7,12 +8,14 @@ module CLI
     def initialize(name, block)
       @name = name
       @block = block
+
       @sum = 0
       @count = 0
     end
 
     def gather(record)
       @sum += @block.call(record)
+
       @count += 1
     end
 
