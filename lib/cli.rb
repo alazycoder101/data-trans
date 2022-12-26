@@ -17,32 +17,24 @@ module CLI
 
   def run(args = {})
 
-    puts args.inspect
     json_file = args[:json_file]
     verbose = args[:verbose]
+    max_records = args[:max] || 100
 
     processors = []
-    fieldRemover = FieldRemover.new('_id')
-    emptyArrayRemover = EmptyArrayRemover.new
-
-    bioStripper = FieldStripper.new(:bio, /[^0-9a-z ]/i)
-
-    processors << fieldRemover
-    processors << emptyArrayRemover
-    processors << bioStripper
+    processors << FieldRemover.new('_id')
+    processors << EmptyArrayRemover.new
+    processors << FieldStripper.new(:bio, /[^0-9a-z ]/i)
 
     stats = []
 
-    averageFollowedBy = AverageStats.new('followed_by', ->(item) { item[:followed_by] })
-    averageMentions = AverageStats.new('mentions', ->(item) { item[:mentions].count})
-    mostFollowedUsers = TopStats.new('most_followed_users', ->(item) { [item[:id], item[:followed_by]]})
+    stats << AverageStats.new('followed_by', ->(item) { item[:followed_by] })
+    stats << AverageStats.new('mentions', ->(item) { item[:mentions].count})
+    stats << TopStats.new('most_followed_users', ->(item) { [item[:id], item[:followed_by]]})
 
-    stats << averageMentions
-    stats << averageFollowedBy
-    stats << mostFollowedUsers
+    splitter = Splitter.new(max_records.to_i)
 
-    splitter = Splitter.new(100)
-
+    # batch_size can be changed base on chunk size
     FastJsonparser.load_many(json_file, batch_size: 9100_000) { |items|
       items.each { |item|
         # stats
@@ -59,12 +51,11 @@ module CLI
       }
     }
 
-    splitter.finalize
+    splitter.write_to_file
 
-    if verbose || true
+    if verbose
       stats.each { |stat|
-        puts stat.name
-        puts stat.result
+        puts "#{stat.name}: #{stat.result}"
       }
     end
   end

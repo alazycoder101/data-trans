@@ -10,11 +10,16 @@ OptionParser.new do |opts|
   opts.on("-v", "--verbose", "Show extra information") do
     @options[:verbose] = true
   end
+
   opts.on("-fFILE", "--file=FILE", "JSON file") do |file|
     @options[:json_file] = file
   end
+
+  opts.on("-mMAXROW", "--max=MAXROW", "max records in file") do |max|
+    @options[:max] = max
+  end
 end.parse!
 
-puts @options.inspect
+abort('Usage: json_process -f <file> -v -m <max record>') unless @options[:json_file]
 
 CLI.run(@options)

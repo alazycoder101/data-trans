@@ -4,6 +4,9 @@
 ```
 docker build -t cli .
 docker run -v /home/app:/opt/app -ti --rm cli sh
+
+# run the command
+bin/json_process -f spec/fixtures/10.json -v
 ```
 ### Native
 ```bash
