@@ -1,0 +1,25 @@
+[
+  {
+    "_id": {
+      "$oid": "5aa104e0f20e84e6104ceccb"
+    },
+    "id": "997634548",
+    "type": "add",
+    "username": "said_buenrostro",
+    "bio": "",
+    "followed_by": 653,
+    "mentions": [
+      "tena2099",
+      "berlinphil",
+      "insurgentebrew",
+      "cervezapacheco",
+      "cervezafauna",
+      "casacardinal",
+      "moderntimesbeer",
+      "eviltwinbrewing",
+      "mikkellerbeer",
+      "brewdogofficial"
+    ],
+    "hashtags": []
+  }
+]
