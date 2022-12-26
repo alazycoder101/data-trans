@@ -8,7 +8,7 @@ module CLI
     end
 
     def process(record)
-      record[@name] = @regex.match(record[@name])
+      record[@name] = record[@name].gsub(@regex, '')
     end
   end
 end
