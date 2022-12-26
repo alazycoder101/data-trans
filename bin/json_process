@@ -21,5 +21,6 @@ OptionParser.new do |opts|
 end.parse!
 
 abort('Usage: json_process -f <file> -v -m <max record>') unless @options[:json_file]
+abort("file #{@options[:json_file]} does not exist.") unless File.exists?(@options[:json_file])
 
 CLI.run(@options)
