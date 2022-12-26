@@ -29,6 +29,8 @@ module CLI
         File.write("#{@base_name}#{@index}.json", JSON.generate(@records.slice!(0, max)))
         @index += 1
       end
+
+      File.write("#{@base_name}#{@index}.json", JSON.generate(@records))
     end
   end
 end
