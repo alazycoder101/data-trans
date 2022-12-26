@@ -1,3 +1,25 @@
+# Function
+1. stats
+* average
+* max
+
+2. transform
+* strip
+* remove
+
+3. split into chunks based on record count
+
+4. benchmark
+
+# Further Improvement
+1. Use more function programming
+2. write json to stream to save cost of memory
+* processor need to change
+* stats can be kept the same
+3. Split works same way as bechmark
+4. Observer design pattern?
+
+
 # Development
 ## Setup
 ### Docker
