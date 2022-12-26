@@ -5,7 +5,7 @@ require 'debug'
 module CLI
   #Dir['lib/cli/**/*.rb'].each { |f| puts f; require_relative "../#{f}" }
   require_relative 'cli/processor'
-  require_relative 'cli/empty_remover'
+  require_relative 'cli/empty_array_remover'
   require_relative 'cli/field_remover'
   require_relative 'cli/average_stats'
   require_relative 'cli/top_stats'

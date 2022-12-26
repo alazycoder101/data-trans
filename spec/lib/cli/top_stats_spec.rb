@@ -18,14 +18,19 @@ describe CLI::TopStats do
 
   describe '#result' do
     it 'init' do
-      expect(stats.result).to eq (0)
+      expect(stats.result).to be_nil
     end
 
-    it 'gathers one' do
+    it 'returns first one ' do
+      stats.gather(records[0])
+      expect(stats.result).to eq([1, 10])
+    end
+
+    it 'gathers all' do
       records.each do |record|
         stats.gather(record)
       end
-      expect(stats.result).to eq(7)
+      expect(stats.result).to eq([2, 12])
     end
   end
 end
